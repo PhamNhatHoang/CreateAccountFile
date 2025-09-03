@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HoangPN VPS - Proxy</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <!-- Màn hình intro -->
+    <div class="container" id="intro-screen">
+        <h1>HoangPN VPS - Proxy</h1>
+        <p class="tagline">Chuyên Cung VPS - Proxy Việt Uy Tín</p>
+
+        <button id="createAccountListBtn">Tạo File [TaiKhoan | MatKhau | Server]</button>
+        <button id="createPasswordChangeFileBtn">Tạo File [TaiKhoan | MatKhauCu | MatKhauMoi]</button>
+
+        <footer class="footer">
+            <p>
+                Copyright ©
+                <a href="https://www.facebook.com/100087059124488" target="_blank"
+                    style="text-decoration:none; color:inherit;">
+                    HoangPN
+                </a> - 0365 068 759
+            </p>
+        </footer>
+    </div>
+
+    <!-- Màn hình Tạo danh sách tài khoản -->
+    <div class="container hidden" id="account-list-screen">
+        <h1>Tạo Danh Sách Tài Khoản</h1>
+        <div class="input-group">
+            <label for="prefix">Trước:</label>
+            <input type="text" id="prefix" placeholder="Ví dụ: abc">
+        </div>
+        <div class="input-group">
+            <label for="suffix">Sau:</label>
+            <input type="text" id="suffix" placeholder="Ví dụ: test@gmail.com">
+        </div>
+        <div class="input-group range-group">
+            <label for="startNum">Từ:</label>
+            <input type="number" id="startNum" placeholder="X">
+            <label for="endNum">Đến:</label>
+            <input type="number" id="endNum" placeholder="Y">
+        </div>
+        <div class="input-group">
+            <label for="password">Mật khẩu:</label>
+            <input type="text" id="password" placeholder="Ví dụ: 321">
+        </div>
+        <div class="input-group">
+            <label for="server">Server:</label>
+            <input type="text" id="server" placeholder="Ví dụ: 1">
+        </div>
+        <button id="generateBtn">Tạo Danh Sách</button>
+
+        <h2>Kết Quả:</h2>
+        <textarea id="output" rows="10" readonly></textarea>
+        <button id="copyBtn">Sao Chép</button>
+        <button class="back-btn" data-target="intro-screen">Quay Lại</button>
+    </div>
+
+    <!-- Màn hình Tạo file đổi mật khẩu -->
+    <div class="container hidden" id="password-change-screen">
+        <h1>Tạo File Đổi Mật Khẩu</h1>
+        <div class="input-group">
+            <label for="changePrefix">Trước:</label>
+            <input type="text" id="changePrefix" placeholder="Ví dụ: abc">
+        </div>
+        <div class="input-group">
+            <label for="changeSuffix">Sau:</label>
+            <input type="text" id="changeSuffix" placeholder="Ví dụ: xyz@gmail.com">
+        </div>
+        <div class="input-group range-group">
+            <label for="changeStartNum">Từ:</label>
+            <input type="number" id="changeStartNum" placeholder="X">
+            <label for="changeEndNum">Đến:</label>
+            <input type="number" id="changeEndNum" placeholder="Y">
+        </div>
+        <div class="input-group">
+            <label for="oldPassword">Mật khẩu cũ:</label>
+            <input type="text" id="oldPassword" placeholder="Ví dụ: 321">
+        </div>
+        <div class="input-group">
+            <label for="newPassword">Mật khẩu mới:</label>
+            <input type="text" id="newPassword" placeholder="Ví dụ: 890">
+        </div>
+        <button id="generateChangeFileBtn">Tạo File Đổi Mật Khẩu</button>
+
+        <h2>Kết Quả:</h2>
+        <textarea id="changeOutput" rows="10" readonly></textarea>
+        <button id="copyChangeFileBtn">Sao Chép</button>
+        <button class="back-btn" data-target="intro-screen">Quay Lại</button>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast hidden"></div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
