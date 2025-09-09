@@ -15,7 +15,7 @@ body {
     color: #333;
 }
 
-/* Container */
+/* Khung chứa nội dung chính */
 .container {
     background: #fff;
     padding: 30px 25px;
@@ -25,12 +25,14 @@ body {
     max-width: 750px;
     transition: transform 0.3s ease;
     animation: fadeIn 0.5s ease-in-out;
+    margin: 40px 0;
 }
 
 .container:hover {
     transform: translateY(-3px);
 }
 
+/* Hiệu ứng xuất hiện */
 @keyframes fadeIn {
     from {
         opacity: 0;
@@ -71,6 +73,7 @@ h2 {
     margin-bottom: 20px;
 }
 
+/* Footer bản quyền */
 .footer {
     text-align: center;
     margin-top: 30px;
@@ -80,7 +83,7 @@ h2 {
     padding-top: 10px;
 }
 
-/* Input */
+/* Nhóm input */
 .input-group {
     margin-bottom: 15px;
 }
@@ -103,13 +106,14 @@ h2 {
     transition: all 0.3s ease;
 }
 
+/* Input khi được focus */
 .input-group input:focus {
     border-color: #007bff;
     box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
     outline: none;
 }
 
-/* Range */
+/* Nhóm nhập số (Từ - Đến) */
 .range-group {
     display: flex;
     align-items: center;
@@ -120,7 +124,7 @@ h2 {
     flex: 1;
 }
 
-/* Buttons */
+/* Nút bấm chung */
 button {
     display: block;
     width: 100%;
@@ -135,11 +139,13 @@ button {
     transition: all 0.3s ease;
 }
 
+/* Hiệu ứng hover cho nút */
 button:hover {
     background: linear-gradient(90deg, #0056b3, #0096c7);
     box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
 }
 
+/* Nút quay lại */
 .back-btn {
     background: linear-gradient(90deg, #6c757d, #868e96);
 }
@@ -149,7 +155,7 @@ button:hover {
     box-shadow: 0 4px 12px rgba(108, 117, 125, 0.3);
 }
 
-/* Textarea */
+/* Ô textarea xuất dữ liệu */
 textarea {
     width: 100%;
     padding: 12px;
@@ -167,7 +173,7 @@ textarea:focus {
     box-shadow: 0 0 6px rgba(0, 123, 255, 0.25);
 }
 
-/* Toast notification */
+/* Cửa sổ thông báo (toast) */
 .toast {
     position: fixed;
     bottom: 20px;
@@ -185,19 +191,23 @@ textarea:focus {
     z-index: 9999;
 }
 
+/* Khi hiển thị toast */
 .toast.show {
     opacity: 1;
     transform: translateY(0);
 }
 
+/* Toast lỗi */
 .toast.error {
     background: linear-gradient(90deg, #dc3545, #ff6b6b);
 }
 
+/* Toast thành công */
 .toast.success {
     background: linear-gradient(90deg, #28a745, #6fdf8f);
 }
 
+/* Nút bị vô hiệu hóa */
 button:disabled {
     opacity: 0.65;
     cursor: not-allowed;
@@ -205,7 +215,49 @@ button:disabled {
     background: linear-gradient(90deg, #c0c0c0, #a8a8a8);
 }
 
-/* Hidden */
+/* Ẩn phần tử */
 .hidden {
     display: none;
+}
+
+/* Nút chọn file */
+input[type="file"] {
+    cursor: pointer;
+}
+
+/* Style cho nút mặc định của input file (Chrome) */
+input[type="file"]::-webkit-file-upload-button {
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+/* Trang Upload file */
+#from-file-screen input[type="file"] {
+    display: block;
+    margin: 10px 0 15px 0;
+    font-size: 0.95rem;
+    padding: 6px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    width: 100%;
+    cursor: pointer;
+    transition: border-color 0.3s ease;
+}
+
+#from-file-screen input[type="file"]:hover {
+    border-color: #007bff;
+}
+
+/* Label trong trang Upload file */
+#from-file-screen label {
+    font-weight: 600;
+    color: #555;
+    font-size: 0.95rem;
+    margin-top: 10px;
+    display: block;
 }

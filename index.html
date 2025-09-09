@@ -16,6 +16,7 @@
 
         <button id="createAccountListBtn">Tạo List [TaiKhoan | MatKhau | Server]</button>
         <button id="createPasswordChangeFileBtn">Tạo List [TaiKhoan | MatKhauCu | MatKhauMoi]</button>
+        <button id="createFromFileBtn">Tạo List từ File Upload</button>
 
         <footer class="footer">
             <p>
@@ -91,6 +92,29 @@
         <h2>Kết Quả:</h2>
         <textarea id="changeOutput" rows="10" readonly></textarea>
         <button id="copyChangeFileBtn">Sao Chép</button>
+        <button class="back-btn" data-target="intro-screen">Quay Lại</button>
+    </div>
+
+    <!-- Màn hình Tạo từ File Upload -->
+    <div class="container hidden" id="from-file-screen">
+        <h1>Tạo List từ File Upload</h1>
+        <div class="input-group">
+            <label for="uploadFile">Chọn file (.txt) [Mỗi dòng là 1 tài khoản]:</label>
+            <input type="file" id="uploadFile" accept=".txt">
+        </div>
+        <div class="input-group">
+            <label for="filePassword">Mật khẩu:</label>
+            <input type="text" id="filePassword" placeholder="Ví dụ: 123456">
+        </div>
+        <div class="input-group">
+            <label for="fileServer">Server:</label>
+            <input type="text" id="fileServer" placeholder="Ví dụ: 1">
+        </div>
+        <button id="generateFromFileBtn">Tạo Danh Sách</button>
+
+        <h2>Kết Quả:</h2>
+        <textarea id="fileOutput" rows="10" readonly></textarea>
+        <button id="copyFromFileBtn">Sao Chép</button>
         <button class="back-btn" data-target="intro-screen">Quay Lại</button>
     </div>
 

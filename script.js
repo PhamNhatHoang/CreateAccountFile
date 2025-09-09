@@ -1,13 +1,10 @@
 document.addEventListener("DOMContentLoaded", () => {
-  // Hàm hiển thị toast
+  // Toast
   function showToast(message, type = "success") {
     const toast = document.getElementById("toast");
     toast.textContent = message;
     toast.className = `toast ${type} show`;
-    setTimeout(() => {
-      // remove only the "show" class, giữ lại type để css vẫn đúng
-      toast.classList.remove("show");
-    }, 3000);
+    setTimeout(() => toast.classList.remove("show"), 3000);
   }
 
   // Elements
@@ -16,6 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const createPasswordChangeFileBtn = document.getElementById(
     "createPasswordChangeFileBtn"
   );
+  const createFromFileBtn = document.getElementById("createFromFileBtn");
 
   const accountListScreen = document.getElementById("account-list-screen");
   const prefixInput = document.getElementById("prefix");
@@ -43,138 +41,139 @@ document.addEventListener("DOMContentLoaded", () => {
   const changeOutputTextarea = document.getElementById("changeOutput");
   const copyChangeFileBtn = document.getElementById("copyChangeFileBtn");
 
+  const fromFileScreen = document.getElementById("from-file-screen");
+  const uploadFile = document.getElementById("uploadFile");
+  const filePasswordInput = document.getElementById("filePassword");
+  const fileServerInput = document.getElementById("fileServer");
+  const generateFromFileBtn = document.getElementById("generateFromFileBtn");
+  const fileOutputTextarea = document.getElementById("fileOutput");
+  const copyFromFileBtn = document.getElementById("copyFromFileBtn");
+
   const backButtons = document.querySelectorAll(".back-btn");
 
-  // Hiển thị / ẩn màn hình
+  // Show screen
   function showScreen(screenToShow) {
-    const screens = [introScreen, accountListScreen, passwordChangeScreen];
-    screens.forEach((screen) => {
-      screen.classList.toggle("hidden", screen !== screenToShow);
-    });
+    const screens = [
+      introScreen,
+      accountListScreen,
+      passwordChangeScreen,
+      fromFileScreen,
+    ];
+    screens.forEach((s) => s.classList.toggle("hidden", s !== screenToShow));
   }
 
+  // Navigation
   createAccountListBtn.addEventListener("click", () =>
     showScreen(accountListScreen)
   );
   createPasswordChangeFileBtn.addEventListener("click", () =>
     showScreen(passwordChangeScreen)
   );
+  createFromFileBtn.addEventListener("click", () => showScreen(fromFileScreen));
 
-  backButtons.forEach((button) => {
-    button.addEventListener("click", (event) => {
-      const targetScreen = document.getElementById(event.target.dataset.target);
-      showScreen(targetScreen);
-    });
-  });
+  backButtons.forEach((btn) =>
+    btn.addEventListener("click", (e) => {
+      const target = document.getElementById(e.target.dataset.target);
+      showScreen(target);
+    })
+  );
 
-  // Toggle trạng thái nút copy dựa trên nội dung textarea
+  // Helpers
   function updateCopyButtonState(textarea, button) {
-    const hasContent =
-      textarea && textarea.value && textarea.value.trim().length > 0;
-    button.disabled = !hasContent;
+    button.disabled = !(textarea && textarea.value.trim().length > 0);
   }
 
-  // Hàm copy robust
   async function copyToClipboard(text) {
     if (!text || !text.trim()) {
       showToast("Không có nội dung để sao chép!", "error");
       return false;
     }
-
     try {
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        await navigator.clipboard.writeText(text);
-      } else {
-        // fallback: tạo textarea tạm thời để copy
-        const tmp = document.createElement("textarea");
-        tmp.value = text;
-        tmp.setAttribute("readonly", "");
-        tmp.style.position = "absolute";
-        tmp.style.left = "-9999px";
-        document.body.appendChild(tmp);
-        tmp.select();
-        document.execCommand("copy");
-        document.body.removeChild(tmp);
-      }
+      await navigator.clipboard.writeText(text);
       showToast("Đã sao chép!", "success");
       return true;
     } catch (err) {
       console.error("Copy failed:", err);
-      showToast(
-        "Không thể sao chép — kiểm tra quyền clipboard hoặc thử thủ công.",
-        "error"
-      );
+      showToast("Không thể sao chép!", "error");
       return false;
     }
   }
 
-  // Init trạng thái nút copy
-  updateCopyButtonState(outputTextarea, copyBtn);
-  updateCopyButtonState(changeOutputTextarea, copyChangeFileBtn);
-
-  // Bắt sự kiện input trên textarea để update trạng thái nút copy khi user sửa/xoá
-  outputTextarea.addEventListener("input", () =>
-    updateCopyButtonState(outputTextarea, copyBtn)
-  );
-  changeOutputTextarea.addEventListener("input", () =>
-    updateCopyButtonState(changeOutputTextarea, copyChangeFileBtn)
-  );
-
-  // Tạo file TaiKhoan|MatKhau|Server
+  // --- Tạo list TaiKhoan|MatKhau|Server ---
   generateBtn.addEventListener("click", () => {
-    const prefix = prefixInput.value;
-    const suffix = suffixInput.value;
     const startNum = parseInt(startNumInput.value);
     const endNum = parseInt(endNumInput.value);
-    const password = passwordInput.value;
-    const server = serverInput.value;
-
     if (isNaN(startNum) || isNaN(endNum) || startNum > endNum) {
       showToast('Vui lòng nhập số "Từ" và "Đến" hợp lệ!', "error");
       return;
     }
-
-    const accountList = [];
+    const result = [];
     for (let i = startNum; i <= endNum; i++) {
-      accountList.push(`${prefix}${i}${suffix}|${password}|${server}`);
+      result.push(
+        `${prefixInput.value}${i}${suffixInput.value}|${passwordInput.value}|${serverInput.value}`
+      );
     }
-
-    outputTextarea.value = accountList.join("\n");
+    outputTextarea.value = result.join("\n");
     updateCopyButtonState(outputTextarea, copyBtn);
-    showToast("Danh sách tài khoản đã được tạo!", "success");
+    showToast("Danh sách đã được tạo!", "success");
   });
+  copyBtn.addEventListener("click", () =>
+    copyToClipboard(outputTextarea.value)
+  );
 
-  // Copy TaiKhoan|MatKhau|Server
-  copyBtn.addEventListener("click", async () => {
-    await copyToClipboard(outputTextarea.value);
-  });
-
-  // Tạo file TaiKhoan|MatKhauCu|MatKhauMoi
+  // --- Tạo list TaiKhoan|MatKhauCu|MatKhauMoi ---
   generateChangeFileBtn.addEventListener("click", () => {
-    const prefix = changePrefixInput.value;
-    const suffix = changeSuffixInput.value;
     const startNum = parseInt(changeStartNumInput.value);
     const endNum = parseInt(changeEndNumInput.value);
-    const oldPassword = oldPasswordInput.value;
-    const newPassword = newPasswordInput.value;
-
     if (isNaN(startNum) || isNaN(endNum) || startNum > endNum) {
       showToast('Vui lòng nhập số "Từ" và "Đến" hợp lệ!', "error");
       return;
     }
-
-    const changeList = [];
+    const result = [];
     for (let i = startNum; i <= endNum; i++) {
-      changeList.push(`${prefix}${i}${suffix}|${oldPassword}|${newPassword}`);
+      result.push(
+        `${changePrefixInput.value}${i}${changeSuffixInput.value}|${oldPasswordInput.value}|${newPasswordInput.value}`
+      );
     }
-
-    changeOutputTextarea.value = changeList.join("\n");
+    changeOutputTextarea.value = result.join("\n");
     updateCopyButtonState(changeOutputTextarea, copyChangeFileBtn);
-    showToast("File đổi mật khẩu đã được tạo!", "success");
+    showToast("Danh sách đổi mật khẩu đã được tạo!", "success");
   });
+  copyChangeFileBtn.addEventListener("click", () =>
+    copyToClipboard(changeOutputTextarea.value)
+  );
 
-  // Copy file TaiKhoan|MatKhauCu|MatKhauMoi
-  copyChangeFileBtn.addEventListener("click", async () => {
-    await copyToClipboard(changeOutputTextarea.value);
+  // --- Tạo list từ file upload ---
+  generateFromFileBtn.addEventListener("click", () => {
+    const file = uploadFile.files[0];
+    if (!file) {
+      showToast("Vui lòng chọn file .txt!", "error");
+      return;
+    }
+    const password = filePasswordInput.value;
+    const server = fileServerInput.value;
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const lines = e.target.result
+        .split(/\r?\n/)
+        .filter((line) => line.trim() !== "");
+      if (lines.length === 0) {
+        showToast("File không có dữ liệu!", "error");
+        return;
+      }
+      const result = lines.map((u) => `${u}|${password}|${server}`);
+      fileOutputTextarea.value = result.join("\n");
+      updateCopyButtonState(fileOutputTextarea, copyFromFileBtn);
+      showToast("Danh sách từ file đã được tạo!", "success");
+    };
+    reader.readAsText(file);
   });
+  copyFromFileBtn.addEventListener("click", () =>
+    copyToClipboard(fileOutputTextarea.value)
+  );
+
+  // Init copy buttons state
+  updateCopyButtonState(outputTextarea, copyBtn);
+  updateCopyButtonState(changeOutputTextarea, copyChangeFileBtn);
+  updateCopyButtonState(fileOutputTextarea, copyFromFileBtn);
 });
